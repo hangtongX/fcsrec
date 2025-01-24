@@ -1,0 +1,75 @@
+[run]
+times = 1 # run times for each ptojects and calculate the mean of test score for report
+
+[projects]
+trainer = ''
+#trainer = 'vae_trainer'
+datasets = ['ml-1m']
+#'beauty','brightkite','sports','yelp','ml-100k','nyc','tky','ml-1m','ml-10m','gowalla'
+models = ['gru4rec','nextitnet','sasrec','cls4rec','tisasrec']
+# 'mf','cdae','multidae','mutivae','macridvae','recvae','invpref','cscvae'
+#'gru4rec','nextitnet','sasrec','mlpmixer','gmlp','fmlp4rec','cls4rec','tisasrec'
+
+
+[dataset]
+trainSize = 0.7
+testSize = 0.2
+valSize = 0.1
+dataname = 'ml-100k' # Invalid when this value exists in projects
+label = true
+negative_num = 1
+concact = true # mixed negatives whith positives if concat is true else negatives as a new col
+compression = 'gzip'
+split = false # re-split the data
+max_seq = 64 # maximum number of sequences in the rec_seq, average length is the default value
+split_type = 'rec_seq' # ['normal','rec','rec_seq','image']
+traintype = 'rec_seq' # ['normal', 'rec', 'rec_seq', 'rec_seq_full', 'rec_neg', 'rec_pairneg', 'rec_full', 'rec_sample']
+evaltype = 'rec_seq_full' # ['normal', 'rec', 'rec_seq', 'rec_seq_full', 'rec_neg', 'rec_pairneg', 'rec_full', 'rec_sample']
+testtype = 'rec_seq_full' # ['normal', 'rec', 'rec_seq', 'rec_seq_full', 'rec_neg', 'rec_pairneg', 'rec_full', 'rec_sample']
+
+
+[test]
+type = 'fullsort' # ['samplesort', 'fullsort']
+patience_max = 40
+evalmetric = 'recall'
+evalatk = 20
+sortType = 'asc' # ['asc', 'desc']
+testmetric = ['recall','hit','mrr','map','ndcg','precision'] #,'tail_percent'
+testmetrick = [1, 5, 10, 20, 30]
+
+[train]
+device = 0
+env_rank = 0
+num_epochs = 1000
+callback = false
+no_cuda = true
+per_device_train_batch_size = 64
+per_device_eval_batch_size = 64
+train_dataloader_num_workers = 2
+eval_dataloader_num_workers = 2
+learning_rate = 1e-4
+optimizer_cls = "Adam"
+optimizer_params = {weight_decay = 1e-4}
+seed = [1949]
+steps_saving = 100
+steps_predict = 10
+# output_dir default set is model_results/modelname/dataname, if need reset use 'output_dir = str'
+best_train_loss = 1e10
+best_eval_loss = -1e10
+keep_best_on_train = false
+log_on_file = false
+test_shuffle = false
+amp = false
+
+# wandb config
+project_name = 'fcsrec_ti'
+run_name = ''
+run_tags = ['baseline']
+entity_name = 'snippertong'
+
+world_size = -1
+local_rank = -1
+rank = -1
+dist_backend = "nccl"
+master_addr = "localhost"
+master_port = "12345"
